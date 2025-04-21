@@ -18,5 +18,5 @@ def input_grade(request):
         Grade.objects.create(student=student, subject=subject, grade=grade)
         return redirect('input_grade')
     
-    return render(request, 'input_grade.html', 
+    return render(request, 'core/input_grade.html', 
                   {'students': students})
