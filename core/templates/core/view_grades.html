@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Grades</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+
+<div class="container py-5">
+    <div class="card shadow-lg rounded-4 p-4 bg-secondary">
+        <h2 class="mb-4 text-center">My Grades</h2>
+
+        {% if grades %}
+            <table class="table table-dark table-hover rounded-3 overflow-hidden">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Subject</th>
+                        <th>Grade</th>
+                        <th>Date Recorded</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for grade in grades %}
+                    <tr>
+                        <td>{{ grade.subject }}</td>
+                        <td>{{ grade.grade }}</td>
+                        <td>{{ grade.date_recorded|date:"M d, Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info text-center">No grades available yet.</div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

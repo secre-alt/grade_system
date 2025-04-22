@@ -20,3 +20,11 @@ def input_grade(request):
     
     return render(request, 'core/input_grade.html', 
                   {'students': students})
+
+@login_required
+def view_grades(request):
+    if request.user.role != 'student':
+        return redirect('home')
+
+    grades = Grade.objects.filter(student__user=request.user).order_by('-date_recorded')
+    return render(request, 'core/view_grades.html', {'grades': grades})
