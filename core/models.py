@@ -1,28 +1,26 @@
+# core/models.py
+from django.contrib.auth.models import User
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    department = models.CharField(max_length=100)
 
-class CustomUser(AbstractUser):
-    USER_ROLES = (
-        ('admin', 'Admin'),
-        ('teacher', 'Teacher'),
-        ('student', 'Student'),
-    )
-    role = models.CharField(max_length=10, choices=USER_ROLES)
+    def __str__(self):
+        return f"Teacher: {self.user.username}"
 
-class StudentProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    student_id = models.CharField(max_length=20)
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    grade_level = models.CharField(max_length=50)
 
-
-class TeacherProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    employee_id = models.CharField(max_length=20)
-
+    def __str__(self):
+        return f"Student: {self.user.username}"
 
 class Grade(models.Model):
-    student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.CharField(max_length=100)
-    grade = models.DecimalField(max_digits=5, decimal_places=2)
-    date_recorded = models.DateTimeField(auto_now_add=True)    
+    grade = models.FloatField()
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.subject} - {self.student.user.username}: {self.grade}"

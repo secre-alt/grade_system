@@ -1,12 +1,16 @@
 from django.contrib import admin
-from .models import CustomUser, Grade, StudentProfile, TeacherProfile
+from .models import Teacher, Student
 
 # Register your models here.
-admin.site.site_header = "Grade System Project"
-admin.site.site_title = "Grade System"
 
+admin.site.site_header = "School Admin Dashboard"
+admin.site.site_title = "Grade System Admin"
+admin.site.index_title = "Welcome to the Admin Portal"
 
-admin.site.register(CustomUser)
-admin.site.register(Grade)
-admin.site.register(StudentProfile)
-admin.site.register(TeacherProfile)
+@admin.register(Teacher)
+class TeacherAdmin(admin.ModelAdmin):
+    list_display = ('user', 'department')
+
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'grade_level')

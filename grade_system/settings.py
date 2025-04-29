@@ -29,7 +29,11 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-AUTH_USER_MODEL = 'core.CustomUser'
+# Branding
+ADMIN_SITE_HEADER = "School Admin Dashboard"
+ADMIN_SITE_TITLE = "Grade System Admin"
+ADMIN_INDEX_TITLE = "Welcome to the Admin Portal"
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
