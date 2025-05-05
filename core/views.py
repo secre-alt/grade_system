@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
-from core.models import Student, Teacher  # import your models
+from core.models import Student, Teacher 
 
 def user_login(request):
     if request.method == 'POST':
