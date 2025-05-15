@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center text-center" style="min-height: 80vh;">
+    <div>
+        <h1 class="mb-3">Welcome to the Grade Management System</h1>
+        <p class="mb-4 text-muted">Easily manage and access student grades with a few clicks.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Get Started</a>
+    </div>
+</div>
+{% endblock %}

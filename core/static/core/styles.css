@@ -1,0 +1,26 @@
+.custom-navbar {
+    background: linear-gradient(90deg, #2634ef, #3177f0, #eedc1c);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 12px 20px;
+    border-bottom: 1px solid #444;
+}
+
+.custom-navbar .nav-link {
+    margin-right: 15px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.custom-navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #00d1b2 !important;
+}
+
+body {
+    background-color: #f0f2f5;
+}
+
+.card {
+    border-radius: 16px;
+}

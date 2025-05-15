@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from core.models import Student, Teacher 
 
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'core/home.html')
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -92,3 +97,8 @@ def delete_grade(request, grade_id):
         return redirect('teacher_dashboard')
     return redirect('login')
 
+from django.contrib.auth import logout
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')  # or any other page you want after logout
