@@ -106,3 +106,19 @@ from django.contrib.auth import logout
 def user_logout(request):
     logout(request)
     return redirect('home')  # or any other page you want after logout
+
+def admin_dashboard(request):
+    student_count = Student.objects.count()
+    teacher_count = Teacher.objects.count()
+    course_count = Course.objects.count()
+    grade_count = Grade.objects.count()
+    recent_grades = Grade.objects.order_by('-updated_at')[:10]
+
+    context = {
+        'student_count': student_count,
+        'teacher_count': teacher_count,
+        'course_count': course_count,
+        'grade_count': grade_count,
+        'recent_grades': recent_grades,
+    }
+    return render(request, 'admin/dashboard.html', context)
