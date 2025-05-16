@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+{% block title %}Delete Grade{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <h2 class="text-center text-danger mb-4">Confirm Grade Deletion</h2>
+    <div class="alert alert-warning text-center">
+        Are you sure you want to delete the grade for <strong>{{ grade.student.user.username }}</strong> - <strong>{{ grade.subject }}</strong>?
+    </div>
+
+    <form method="POST" class="text-center">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+{% endblock %}

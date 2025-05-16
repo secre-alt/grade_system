@@ -18,7 +18,7 @@ class Student(models.Model):
 
 class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    subject = models.CharField(max_length=100)
+    course = models.CharField(max_length=100)
     grade = models.FloatField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 

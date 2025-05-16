@@ -64,13 +64,13 @@ def teacher_dashboard(request):
 def add_grade(request):
     if hasattr(request.user, 'teacher') and request.method == 'POST':
         student_id = request.POST['student_id']
-        subject = request.POST['subject']
+        course = request.POST['course']
         grade_value = request.POST['grade']
         student = Student.objects.get(id=student_id)
         teacher = request.user.teacher
         Grade.objects.create(
             student=student,
-            subject=subject,
+            course=course,
             grade=grade_value,
             teacher=teacher
         )
@@ -82,7 +82,7 @@ def edit_grade(request, grade_id):
     if hasattr(request.user, 'teacher'):
         grade = get_object_or_404(Grade, id=grade_id)
         if request.method == 'POST':
-            grade.subject = request.POST['subject']
+            grade.course= request.POST['course']
             grade.grade = request.POST['grade']
             grade.save()
             return redirect('teacher_dashboard')
@@ -93,9 +93,14 @@ def edit_grade(request, grade_id):
 def delete_grade(request, grade_id):
     if hasattr(request.user, 'teacher'):
         grade = get_object_or_404(Grade, id=grade_id)
-        grade.delete()
-        return redirect('teacher_dashboard')
+
+        if request.method == 'POST':
+            grade.delete()
+            return redirect('teacher_dashboard')
+
+        return render(request, 'delete_grade.html', {'grade': grade})
     return redirect('login')
+
 
 from django.contrib.auth import logout
 

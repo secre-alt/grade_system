@@ -62,7 +62,7 @@
                     {% for grade in grades %}
                     <tr>
                         <td>{{ grade.student.user.username }}</td>
-                        <td>{{ grade.subject }}</td>
+                        <td>{{ grade.course }}</td>
                         <td>{{ grade.grade }}</td>
                         <td>
                             <a href="{% url 'edit_grade' grade.id %}" class="btn btn-sm btn-warning">Edit</a>
