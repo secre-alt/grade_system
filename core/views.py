@@ -18,7 +18,7 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            
+            messages.success(request, "Successfully logged in.")
             # Check role
             if hasattr(user, 'student'):
                 return redirect('student_dashboard')  # Replace with your student dashboard URL name
@@ -74,6 +74,7 @@ def add_grade(request):
             grade=grade_value,
             teacher=teacher
         )
+        messages.success(request, "Grade added!")
         return redirect('teacher_dashboard')
     return redirect('login')
 
@@ -84,6 +85,7 @@ def edit_grade(request, grade_id):
         if request.method == 'POST':
             grade.grade = request.POST['grade']
             grade.save()
+            messages.success(request, "Grade updated.")
             return redirect('teacher_dashboard')
         return render(request, 'edit_grade.html', {'grade': grade})
     return redirect('login')
@@ -95,6 +97,7 @@ def delete_grade(request, grade_id):
 
         if request.method == 'POST':
             grade.delete()
+            messages.success(request, "Grade deleted.")
             return redirect('teacher_dashboard')
 
         return render(request, 'delete_grade.html', {'grade': grade})
@@ -105,6 +108,7 @@ from django.contrib.auth import logout
 
 def user_logout(request):
     logout(request)
+    messages.success(request, "Logged out successfully.")
     return redirect('home')  # or any other page you want after logout
 
 
@@ -127,3 +131,6 @@ def admin_dashboard(request):
         'recent_grades': recent_grades,
     }
     return render(request, 'admin/dashboard.html', context)
+
+from django.contrib import messages
+
