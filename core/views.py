@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from core.models import Student, Teacher 
-
+from django.contrib import messages
 from django.shortcuts import render
 
 def home(request):
@@ -74,7 +74,7 @@ def add_grade(request):
             grade=grade_value,
             teacher=teacher
         )
-        messages.success(request, "Grade added!")
+        messages.success(request, "Grade Added!")
         return redirect('teacher_dashboard')
     return redirect('login')
 
@@ -85,7 +85,7 @@ def edit_grade(request, grade_id):
         if request.method == 'POST':
             grade.grade = request.POST['grade']
             grade.save()
-            messages.success(request, "Grade updated.")
+            messages.success(request, "Grade Updated!")
             return redirect('teacher_dashboard')
         return render(request, 'edit_grade.html', {'grade': grade})
     return redirect('login')
@@ -97,7 +97,7 @@ def delete_grade(request, grade_id):
 
         if request.method == 'POST':
             grade.delete()
-            messages.success(request, "Grade deleted.")
+            messages.success(request, "Grade Deleted!")
             return redirect('teacher_dashboard')
 
         return render(request, 'delete_grade.html', {'grade': grade})
@@ -109,7 +109,7 @@ from django.contrib.auth import logout
 def user_logout(request):
     logout(request)
     messages.success(request, "Logged out successfully.")
-    return redirect('home')  # or any other page you want after logout
+    return redirect('home')  
 
 
 @login_required
@@ -132,5 +132,5 @@ def admin_dashboard(request):
     }
     return render(request, 'admin/dashboard.html', context)
 
-from django.contrib import messages
+
 

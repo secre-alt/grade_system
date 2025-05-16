@@ -1,10 +1,10 @@
 {% extends 'core/base.html' %}
 
-
 {% block title %}Teacher Dashboard{% endblock %}
 
 {% block content %}
 <div class="container py-4">
+    <!-- Welcome -->
     <div class="text-center mb-4">
         <h2>Welcome, <span class="text-primary text-capitalize">{{ request.user.username }}</span>!</h2>
         <p class="text-muted">Manage and record student grades</p>
@@ -12,9 +12,7 @@
 
     <!-- Add Grade Form -->
     <div class="card shadow-sm mb-5">
-        <div class="card-header bg-primary text-white">
-            Add Grade
-        </div>
+        <div class="card-header bg-primary text-white">Add Grade</div>
         <div class="card-body">
             <form method="POST" action="{% url 'add_grade' %}">
                 {% csrf_token %}
@@ -29,7 +27,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="subject" class="form-label">Course</label>
-                        <input type="text" name="subject" class="form-control" required>
+                        <input type="text" name="course" class="form-control" required>
                     </div>
                     <div class="col-md-4">
                         <label for="grade" class="form-label">Grade</label>
@@ -37,17 +35,15 @@
                     </div>
                 </div>
                 <div class="mt-4 text-center">
-                    <button type="submit" class="btn btn-success px-5 mx-auto d-block">Add Grade</button>
+                    <button type="submit" class="btn btn-success px-5">Add Grade</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Grade List Table -->
+    <!-- Grades Table -->
     <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">
-            Grades You Added
-        </div>
+        <div class="card-header bg-secondary text-white">Grades You Added</div>
         <div class="card-body p-0">
             <table class="table table-bordered table-hover mb-0">
                 <thead class="table-light">
@@ -55,7 +51,7 @@
                         <th>Student</th>
                         <th>Course</th>
                         <th>Grade</th>
-                        <th style="width: 140px;">Actions</th>
+                        <th style="width: 70px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,45 +60,62 @@
                         <td>{{ grade.student.user.username }}</td>
                         <td>{{ grade.course }}</td>
                         <td>{{ grade.grade }}</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ grade.id }}">
-                                Edit
+                      
+                        <td class="text-center">
+                            <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            id="popover-btn-{{ grade.id }}"
+                            data-bs-html="true"
+                            data-bs-trigger="focus"
+                            title="Actions">
+                            <i class="bi bi-info-circle"></i>
                             </button>
-                            <a href="{% url 'delete_grade' grade.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this grade?')">Delete</a>
+                    
+                          <!-- Hidden popover content -->
+                          <div id="popover-content-{{ grade.id }}" class="d-none">
+                            <button class="btn btn-sm btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ grade.id }}">
+                              <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <form method="POST" action="{% url 'delete_grade' grade.id %}" class="w-100">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this grade?')">
+                                  <i class="bi bi-trash3"></i>
+                              </button>
+                            </form>
+                          </div>
                         </td>
-                    </tr>
-
-                    <!-- Modal -->
+                      </tr>
+                      
+                    <!-- Edit Modal -->
                     <div class="modal fade" id="editModal{{ grade.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ grade.id }}" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content shadow">
-                          <form method="POST" action="{% url 'edit_grade' grade.id %}">
-                            {% csrf_token %}
-                            <div class="modal-header bg-primary text-white">
-                              <h5 class="modal-title" id="editModalLabel{{ grade.id }}">Edit Grade</h5>
-                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-dialog">
+                            <div class="modal-content shadow">
+                                <form method="POST" action="{% url 'edit_grade' grade.id %}">
+                                    {% csrf_token %}
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title" id="editModalLabel{{ grade.id }}">Edit Grade</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Student</label>
+                                            <input type="text" class="form-control" value="{{ grade.student.user.username }}" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Course</label>
+                                            <input type="text" class="form-control bg-light" value="{{ grade.course }}" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gradeInput{{ grade.id }}" class="form-label fw-semibold">Grade</label>
+                                            <input type="text" name="grade" id="gradeInput{{ grade.id }}" class="form-control" value="{{ grade.grade }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <button type="submit" class="btn btn-success">Save changes</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label class="form-label fw-semibold">Student</label>
-                                <input type="text" class="form-control" value="{{ grade.student.user.username }}" disabled>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label fw-semibold">Course</label>
-                                <input type="text" class="form-control bg-light" value="{{ grade.course }}" disabled>
-                              </div>
-                              <div class="mb-3">
-                                <label for="gradeInput{{ grade.id }}" class="form-label fw-semibold">Grade</label>
-                                <input type="text" name="grade" id="gradeInput{{ grade.id }}" class="form-control" value="{{ grade.grade }}" required>
-                              </div>
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                <button type="submit" class="btn btn-success">Save changes</button>
-                              </div>
-                              
-                          </form>
                         </div>
-                      </div>
                     </div>
                     {% empty %}
                     <tr>
