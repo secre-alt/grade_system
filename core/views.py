@@ -82,7 +82,6 @@ def edit_grade(request, grade_id):
     if hasattr(request.user, 'teacher'):
         grade = get_object_or_404(Grade, id=grade_id)
         if request.method == 'POST':
-            grade.course= request.POST['course']
             grade.grade = request.POST['grade']
             grade.save()
             return redirect('teacher_dashboard')
