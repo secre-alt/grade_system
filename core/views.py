@@ -107,7 +107,12 @@ def user_logout(request):
     logout(request)
     return redirect('home')  # or any other page you want after logout
 
+
+@login_required
 def admin_dashboard(request):
+    if not request.user.is_superuser:
+        return redirect('login')
+
     student_count = Student.objects.count()
     teacher_count = Teacher.objects.count()
     course_count = Course.objects.count()
