@@ -130,9 +130,9 @@
             <table class="table table-bordered table-hover mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Student</th>
-                        <th>Course</th>
-                        <th>Grade</th>
+                        <th>🎓 Student</th>
+                        <th>📚 Course</th>
+                        <th>✅ Grade</th>                        
                         <th class="text-center" style="width: 70px;">Actions</th>
                     </tr>
                 </thead>
@@ -151,20 +151,22 @@
                                 <i class="bi bi-info-circle"></i>
                             </button>
 
-                            <!-- Popover content -->
                             <div id="popover-content-{{ grade.id }}" class="d-none text-center">
                                 <button class="btn-icon btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ grade.id }}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
+                                
                                 <form method="POST" action="{% url 'delete_grade' grade.id %}" class="d-inline-block delete-form">
                                     {% csrf_token %}
-                                    <button type="button" class="btn-icon btn-danger delete-btn">
+                                    <button 
+                                        type="button"
+                                        class="btn-icon btn-danger delete-btn"
+                                        data-grade-id="{{ grade.id }}"
+                                        data-action-url="{% url 'delete_grade' grade.id %}">
                                         <i class="bi bi-trash3"></i>
                                     </button>
-                                </form>                                                                                                     
-                                    </button>
                                 </form>
-                            </div>
+                            </div>                            
                         </td>
                     </tr>
 

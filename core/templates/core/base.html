@@ -96,7 +96,6 @@
         });
       </script>
 
- {% block scripts %}{% endblock %}
  
 <footer class="bg-dark text-white text-center py-3 mt-5">
     <div class="container">
@@ -104,5 +103,33 @@
     </div>
 </footer>
 
+{% block scripts %}{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("click", function(e) {
+        const target = e.target.closest(".delete-btn");
+    
+        if (target) {
+            e.preventDefault();
+            const form = target.closest("form");
+    
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This grade will be permanently deleted.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+    });
+    </script>
+    
 </body>
 </html>
