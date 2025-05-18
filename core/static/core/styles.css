@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
 .custom-navbar {
     background: linear-gradient(90deg, #2634ef, #3177f0, #eedc1c);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -17,10 +19,26 @@
     color: #00d1b2 !important;
 }
 
-body {
+body, html {
     background-color: #f0f2f5;
+    font-family: 'Poppins', sans-serif;
 }
 
 .card {
     border-radius: 16px;
 }
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+    z-index: 1000;
+}
+
+.container-year {
+    max-width: 900px; /* or any fixed width you want */
+    width: 100%;
+    margin: 0 auto;  /* center horizontally */
+    
+  }

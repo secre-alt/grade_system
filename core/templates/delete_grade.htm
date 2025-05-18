@@ -5,13 +5,44 @@
 <div class="container mt-5" style="max-width: 600px;">
     <h2 class="text-center text-danger mb-4">Confirm Grade Deletion</h2>
     <div class="alert alert-warning text-center">
-        Are you sure you want to delete the grade for <strong>{{ grade.student.user.username }}</strong> - <strong>{{ grade.subject }}</strong>?
+        Are you sure you want to delete the grade for
+        <strong>{{ grade.student.user.username }}</strong> -
+        <strong>{{ grade.subject }}</strong>?
     </div>
 
-    <form method="POST" class="text-center">
+    <form method="POST" class="text-center" id="delete-form">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <button type="button" class="btn btn-danger" id="delete-btn">Yes, Delete</button>
         <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary ms-2">Cancel</a>
     </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteBtn = document.getElementById("delete-btn");
+        const form = document.getElementById("delete-form");
+
+        if (deleteBtn && form) {
+            deleteBtn.addEventListener("click", function () {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This grade will be permanently deleted.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        }
+    });
+</script>
 {% endblock %}

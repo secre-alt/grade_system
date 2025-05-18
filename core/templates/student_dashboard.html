@@ -1,41 +1,72 @@
 {% extends 'core/base.html' %}
 {% load tz %}
-
-{% block title %}Student Dashboard{% endblock %}
+{% load custom_filters %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 container-max">
     <div class="text-center mb-4">
-        <h2>Welcome, <span class="text-primary text-capitalize">{{ request.user.username }}</span>!</h2>
-        <p class="text-muted">Here are your course grades. Keep up the great work!</p>
+        <h2 class="welcome-title">Welcome,  
+            <span style="color:#3b82f6; text-transform: capitalize;">{{ request.user.username }}</span>!
+        </h2>
+        <p class="welcome-subtext">Here are your course grades. Keep up the great work! 🎓</p>
     </div>
 
-    <div class="card">
-        <div class="card-header bg-primary text-white fw-bold">
-            Your Grades
-        </div>
-        <div class="card-body p-0">
-            <table class="table table-bordered mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Course</th>
-                        <th>Grade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for grade in grades %}
-                        <tr>
-                            <td>{{ grade.course }}</td>
-                            <td>{{ grade.grade }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="2" class="text-center">No grades available.</td>
-                        </tr>
+    {% if grouped_grades %}
+        {% for year, semesters in grouped_grades.items %}
+            <div class="card shadow-lg rounded-4 border-0 mb-5 card-custom">
+                <div class="card-header card-custom-header bg-dark-blue text-white">
+                    {{ year }}
+                </div>
+                <div class="card-body card-body-custom">
+                    {% for semester, semester_grades in semesters.items %}
+                        {% if semester_grades %}
+                            <div class="mb-4">
+                                <h6 class="card-header bg-secondary text-white rounded-top">
+                                    {{ semester }}
+                                </h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped shadow-sm mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>📚 Course</th>
+                                                <th>✅ Grade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for grade in semester_grades %}
+                                                <tr>
+                                                    <td>{{ grade.course }}</td>
+                                                    <td>{{ grade.grade }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center mt-5">
+            <p class="text-muted">No grades available yet. 📭</p>
         </div>
-    </div>
+    {% endif %}
 </div>
+
+<!-- Back to Top Button -->
+<button onclick="scrollToTop()" class="btn btn-primary rounded-circle shadow back-to-top" id="backToTopBtn" title="Back to Top">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<script>
+    const btn = document.getElementById("backToTopBtn");
+    window.onscroll = function () {
+        btn.style.display = window.pageYOffset > 300 ? "block" : "none";
+    };
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
 {% endblock %}

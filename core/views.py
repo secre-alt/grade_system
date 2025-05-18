@@ -37,18 +37,36 @@ def user_login(request):
     return render(request, 'login.html')
 
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from collections import defaultdict
+from django.shortcuts import render
 from .models import Grade
 
+
 @login_required
+@user_passes_test(lambda u: hasattr(u, 'student'))
 def student_dashboard(request):
-    if hasattr(request.user, 'student'):
-        student = request.user.student
-        grades = Grade.objects.filter(student=student)
-        return render(request, 'student_dashboard.html', {'grades': grades})
-    return redirect('login')
+    student = request.user.student
+    grades = Grade.objects.filter(student=student).order_by('year_level', 'semester', 'course')
+
+    grouped_grades = defaultdict(lambda: defaultdict(list))
+    for g in grades:
+        # Use .strip() to avoid whitespace issues
+        year = g.year_level.strip()
+        semester = g.semester.strip()
+        grouped_grades[year][semester].append(g)
+
+    # Convert defaultdict to regular dict for template safety
+    grouped_grades = {year: dict(semesters) for year, semesters in grouped_grades.items()}
+
+    print(f"Grouped grades: {grouped_grades}")  # Confirm grouping
+
+    return render(request, 'student_dashboard.html', {
+        'grades': grades,
+        'grouped_grades': grouped_grades,  # IMPORTANT: pass grouped_grades to template
+    })
 
 @login_required
 def teacher_dashboard(request):
@@ -66,17 +84,27 @@ def add_grade(request):
         student_id = request.POST['student_id']
         course = request.POST['course']
         grade_value = request.POST['grade']
-        student = Student.objects.get(id=student_id)
+        year_level = request.POST['year_level']
+        semester = request.POST['semester']
+        
+        student_obj = Student.objects.get(id=student_id)
+        
+        
         teacher = request.user.teacher
+        
         Grade.objects.create(
-            student=student,
+            student=student_obj,
             course=course,
             grade=grade_value,
+            year_level=year_level,
+            semester=semester,
             teacher=teacher
         )
-        messages.success(request, "Grade Added!")
+        messages.success(request, "Grade added successfully!")
         return redirect('teacher_dashboard')
     return redirect('login')
+
+from django.shortcuts import get_object_or_404, redirect
 
 @login_required
 def edit_grade(request, grade_id):
@@ -85,24 +113,19 @@ def edit_grade(request, grade_id):
         if request.method == 'POST':
             grade.grade = request.POST['grade']
             grade.save()
-            messages.success(request, "Grade Updated!")
+            messages.success(request, "Grade updated successfully!")
             return redirect('teacher_dashboard')
         return render(request, 'edit_grade.html', {'grade': grade})
     return redirect('login')
 
 @login_required
 def delete_grade(request, grade_id):
-    if hasattr(request.user, 'teacher'):
-        grade = get_object_or_404(Grade, id=grade_id)
-
-        if request.method == 'POST':
-            grade.delete()
-            messages.success(request, "Grade Deleted!")
-            return redirect('teacher_dashboard')
-
-        return render(request, 'delete_grade.html', {'grade': grade})
-    return redirect('login')
-
+    grade = get_object_or_404(Grade, id=grade_id)
+    if request.method == "POST":
+        grade.delete()
+        messages.success(request, "Grade deleted successfully.")
+        return redirect('teacher_dashboard')
+    return redirect('teacher_dashboard') 
 
 from django.contrib.auth import logout
 
