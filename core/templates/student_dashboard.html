@@ -21,9 +21,10 @@
                     {% for semester, semester_grades in semesters.items %}
                         {% if semester_grades %}
                             <div class="mb-4">
-                                <h6 class="card-header bg-secondary text-white rounded-top">
-                                    {{ semester }}
-                                </h6>
+                                <h6 class="card-header bg-secondary text-white rounded-top d-flex justify-content-between align-items-center">
+                                    <span>{{ semester }}</span>
+                                    <span class="badge bg-light text-dark">GPA: {{ semester_grades|calculate_gpa }}</span>
+                                </h6>                                
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped shadow-sm mb-0">
                                         <thead class="table-light">
@@ -40,11 +41,17 @@
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
-                                    </table>
-                                </div>
+                                    </table>                               
+                                </div>                                
                             </div>
                         {% endif %}
                     {% endfor %}
+                    <div class="text-end text-center mt-3">
+                        <span class="fw-semibold">Overall GPA for {{ year }}:</span>
+                        <span class="badge bg-success fs-6">
+                            {{ semesters.values|flatten_grades|calculate_gpa }}
+                        </span>
+                    </div>
                 </div>
             </div>
         {% endfor %}
@@ -53,8 +60,9 @@
             <p class="text-muted">No grades available yet. 📭</p>
         </div>
     {% endif %}
-</div>
+    
 
+</div> 
 <!-- Back to Top Button -->
 <button onclick="scrollToTop()" class="btn btn-primary rounded-circle shadow back-to-top" id="backToTopBtn" title="Back to Top">
     <i class="bi bi-arrow-up"></i>

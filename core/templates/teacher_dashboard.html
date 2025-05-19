@@ -212,4 +212,19 @@
     </div>
 </div> <!-- End container -->
 
+
+<!-- Back to Top Button -->
+<button onclick="scrollToTop()" class="btn btn-primary rounded-circle shadow back-to-top" id="backToTopBtn" title="Back to Top">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<script>
+    const btn = document.getElementById("backToTopBtn");
+    window.onscroll = function () {
+        btn.style.display = window.pageYOffset > 300 ? "block" : "none";
+    };
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
 {% endblock %}

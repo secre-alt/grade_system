@@ -61,10 +61,10 @@ def student_dashboard(request):
     # Convert defaultdict to regular dict for template safety
     grouped_grades = {year: dict(semesters) for year, semesters in grouped_grades.items()}
 
-    print(f"Grouped grades: {grouped_grades}")  # Confirm grouping
-
+ 
     return render(request, 'student_dashboard.html', {
         'grades': grades,
+        'all_grades': grades,  
         'grouped_grades': grouped_grades,  # IMPORTANT: pass grouped_grades to template
     })
 

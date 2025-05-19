@@ -1,0 +1,44 @@
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg custom-navbar bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white fw-bold" href="{% url 'home' %}">GradeSystem</a>
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon bg-light"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                </li>
+                    <!-- Authenticated User Links -->
+                    {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'admin:index' %}">Dashboard</a>
+                        </li>
+                    {% elif user.teacher %}
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'teacher_dashboard' %}">Dashboard</a>
+                        </li>
+                    {% elif user.student %}
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'student_dashboard' %}">Dashboard</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                    </li>
+
+                <!-- Guest User Link -->
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
+
+                
+            </ul>
+        </div>
+    </div>
+</nav>
