@@ -153,7 +153,20 @@ def admin_dashboard(request):
         'grade_count': grade_count,
         'recent_grades': recent_grades,
     }
-    return render(request, 'admin/dashboard.html', context)
+    return render(request, 'dashboard/admin/admin_dashboard', context)
 
 
 
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_superuser:
+            login(request, user)
+            return redirect('admin_dashboard')
+        else:
+            messages.error(request, 'Invalid credentials or not an admin.')
+
+    return render(request, 'login')
