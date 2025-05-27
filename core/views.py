@@ -135,38 +135,6 @@ def user_logout(request):
     return redirect('home')  
 
 
-@login_required
-def admin_dashboard(request):
-    if not request.user.is_superuser:
-        return redirect('login')
-
-    student_count = Student.objects.count()
-    teacher_count = Teacher.objects.count()
-    course_count = Course.objects.count()
-    grade_count = Grade.objects.count()
-    recent_grades = Grade.objects.order_by('-updated_at')[:10]
-
-    context = {
-        'student_count': student_count,
-        'teacher_count': teacher_count,
-        'course_count': course_count,
-        'grade_count': grade_count,
-        'recent_grades': recent_grades,
-    }
-    return render(request, 'dashboard/admin/admin_dashboard', context)
 
 
 
-def admin_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None and user.is_superuser:
-            login(request, user)
-            return redirect('admin_dashboard')
-        else:
-            messages.error(request, 'Invalid credentials or not an admin.')
-
-    return render(request, 'login')

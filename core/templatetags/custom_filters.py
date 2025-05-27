@@ -9,8 +9,6 @@ def floatval(value):
     except (ValueError, TypeError):
         return 0.0
 
-
-
 @register.filter
 def calculate_gpa(grades):
     try:
@@ -22,12 +20,10 @@ def calculate_gpa(grades):
     except:
         return "N/A"
 
-
-
-
 @register.filter
 def flatten_grades(semesters):
     grades = []
     for semester_grades in semesters:
         grades.extend(semester_grades)
     return grades
+
