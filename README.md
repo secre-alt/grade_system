@@ -31,3 +31,32 @@ This is a Django-based web application designed for teachers to **manage student
 1. Clone the repository:
    ```bash
    git clone (https://github.com/secre-alt/grade_system/tree/main)
+   
+2. Create & Activate Virtual Environment
+   ```bash
+   python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # macOS/Linux
+   source venv/bin/activate
+3. Install Dependencies
+   ```bash
+   pip install -r requirements.txt
+4. Run Migrations
+    ```bash
+    python manage.py makemigrations
+    python manage.py migrate
+5. Create a Superuser (Admin)
+   ```bash
+   python manage.py createsuperuser
+6. Start the Server
+   ```bash
+   python manage.py runserver
+Go to: http://127.0.0.1:8000
+
+📌 License
+This project is for educational purposes only.
+
+
+Eldren Dela Cruz – B.S. Information Systems
+GitHub: @secre-alt
