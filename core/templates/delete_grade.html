@@ -12,7 +12,7 @@
 
     <form id="delete-form" method="POST" action="{% url 'delete_grade' grade.id %}" class="text-center">
         {% csrf_token %}
-        <button type="button" id="delete-btn" class="btn btn-danger px-4">
+        <button type="submit" id="delete-btn" class="btn btn-danger px-4">
             Delete
         </button>
         <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary px-4">Cancel</a>
