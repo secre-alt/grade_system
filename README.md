@@ -24,7 +24,7 @@ This is a Django-based web application designed for teachers to **manage student
 
 ## 📸 Screenshot
 
-![Dashboard Preview](screenshot.png)
+![Dashboard Preview](Teachers-Dashboard.png)
 
 ## ✅ Installation
 
