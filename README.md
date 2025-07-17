@@ -30,7 +30,7 @@ This is a Django-based web application designed for teachers to **manage student
 
 1. Clone the repository:
    ```bash
-   git clone (https://github.com/secre-alt/grade_system/tree/main)
+   git clone (https://github.com/secre-alt/grade_system)
    
 2. Create & Activate Virtual Environment
    ```bash
