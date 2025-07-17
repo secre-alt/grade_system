@@ -1,4 +1,4 @@
-# 🎓 Teacher Dashboard – Grade Management System
+# 🎓 Grade Management System
 
 This is a Django-based web application designed for teachers to **manage student grades** efficiently. It provides a user-friendly dashboard where teachers can add, edit, and delete student grades. The system also supports pagination, searching, and sorting of grade records using **DataTables**.
 
