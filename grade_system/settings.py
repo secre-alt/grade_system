@@ -38,10 +38,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
-    #'jazzmin',
-    #'admin_interface',       # ← Comment out for now
-    #'colorfield',            # Required by admin_interface
-    #'grappelli',             # ← Comment out
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
